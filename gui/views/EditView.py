@@ -9,8 +9,10 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QVBoxLayout,
     QWidget,
-    QMessageBox
+    QMessageBox,
 )
+
+from gui.views.LineEditView import LineEditView
 
 
 class EditView(QMainWindow):
@@ -23,6 +25,7 @@ class EditView(QMainWindow):
     new_file_requested = pyqtSignal()
     save_file_requested = pyqtSignal()
     save_file_as_requested = pyqtSignal()
+    toggle_copilot_field_requested = pyqtSignal(bool)
 
     def __init__(self) -> None:
         super().__init__()
@@ -91,17 +94,26 @@ class EditView(QMainWindow):
         self.pasteAction.triggered.connect(self.plainTextEdit.paste)  # type: ignore
         self.editMenu.addAction(self.pasteAction)  # type: ignore
 
+        self.viewMenu = self.menuBar().addMenu("&View")  # type: ignore
+
+        self.showCopilotAction = self.viewMenu.addAction("&Show Copilot field")  # type: ignore
+        self.showCopilotAction.setCheckable(True)  # type: ignore
+        self.showCopilotAction.setChecked(True)  # type: ignore
+        self.showCopilotAction.toggled.connect(self.on_toggle_copilot_field_requested)  # type: ignore
+        self.viewMenu.addAction(self.showCopilotAction)  # type: ignore
+
     def update_data(self, data):
         if self.plainTextEdit.toPlainText() != data:
             self.plainTextEdit.setPlainText(data)
+
+    def on_toggle_copilot_field_requested(self):
+        self.toggle_copilot_field_requested.emit(self.showCopilotAction.isChecked())
 
     def on_text_changed(self):
         self.text_edited.emit(self.plainTextEdit.toPlainText())
 
     def on_text_selection_changed(self):
-        self.has_text_selection_changed.emit(
-            self.plainTextEdit.textCursor().hasSelection()
-        )
+        self.has_text_selection_changed.emit(self.plainTextEdit.textCursor().hasSelection())
 
     def set_save_enabled(self, enabled):
         self.saveAction.setEnabled(enabled)  # type: ignore
