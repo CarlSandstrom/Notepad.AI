@@ -1,11 +1,11 @@
 from typing import Any
-from EditView import *
-from FileController import *
-from FileNameModel import *
-from MenuController import *
-from TextModel import *
-from WindowTitleController import *
-from RecentFilesModel import *
+from gui.views.EditView import *
+from gui.models.FileNameModel import *
+from gui.models.TextModel import *
+from gui.models.RecentFilesModel import *
+from gui.controllers.MenuController import *
+from gui.controllers.FileController import *
+from gui.controllers.WindowTitleController import *
 
 
 class EditMainController(QObject):
@@ -16,20 +16,15 @@ class EditMainController(QObject):
 
         self._view = EditView()
 
-        self._window_title_controller = WindowTitleController(
-            self._view, self._file_name_model, self._text_model
-        )
+        self._window_title_controller = WindowTitleController(self._view, self._file_name_model, self._text_model)
 
         self._recent_files_model = RecentFilesModel(max_recent_files=10)
 
         self._menu_controller = MenuController(
             self._view, self._file_name_model, self._text_model, self._recent_files_model
         )
-        
-        self._file_controller = FileController(
-            self._view, self._file_name_model, self._text_model
-        )
 
+        self._file_controller = FileController(self._view, self._file_name_model, self._text_model)
 
         self._connect_signals()
 
@@ -43,7 +38,7 @@ class EditMainController(QObject):
 
     def on_file_opened(self, file_name):
         if not os.path.isfile(file_name):
-            self._view.showErrorMessage ( "File not found", f"{file_name} does not exist.")
+            self._view.showErrorMessage("File not found", f"{file_name} does not exist.")
             self._recent_files_model.remove_recent_file(file_name)
             return
         self._file_name_model.set_file_name(file_name)
@@ -59,12 +54,8 @@ class EditMainController(QObject):
         self._text_model.data_changed.connect(self._view.update_data)
         self._file_controller.file_saved.connect(self.on_file_saved)
         self._file_controller.file_opened.connect(self.on_file_opened)
-        self._recent_files_model.recent_files_changed.connect(
-            self._menu_controller.update_recent_files
-        )
-        self._view.open_recent_file_requested.connect(
-            self.on_recent_file_opened
-        )
+        self._recent_files_model.recent_files_changed.connect(self._menu_controller.update_recent_files)
+        self._view.open_recent_file_requested.connect(self.on_recent_file_opened)
 
         self._view.file_opened.connect(self.on_file_opened)
 
@@ -76,7 +67,6 @@ class EditMainController(QObject):
         self._menu_controller.on_modified_data_changed(False)
         self._menu_controller.on_has_text_selection_changed(False)
         self._recent_files_model.load_recent_files()
-        
+
     def on_file_saved(self, file_name):
         self._recent_files_model.add_recent_file(file_name)
-    

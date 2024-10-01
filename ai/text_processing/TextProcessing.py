@@ -1,10 +1,10 @@
 import sys
 
-sys.path.append("/home/carl/dev/test.programs/Huggingface.tests/FineTuningIntentsAndSlots/")
+sys.path.append("/home/carl/dev/Notepad.AI/")
 
 import torch
-from Common.Constants import *
-from Common.JointBertModel import JointBertModel
+from ai.common.Constants import *
+from ai.common.JointBertModel import JointBertModel
 from transformers import AutoTokenizer
 
 
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     num_intents = 6  # Make sure this matches the number of intents in your model
     num_slots = len(slotId_to_str_mapping)  # Update this to match the number of slots in your saved model
     model = JointBertModel.load_model(
-        "FineTuningIntentsAndSlots/FineTuning/",
+        "ai/models/",
         num_intents=num_intents,
         num_slots=num_slots,
     )

@@ -1,5 +1,5 @@
-from EditView import *
-from TextModel import *
+from gui.views.EditView import *
+from gui.models.TextModel import *
 
 
 class WindowTitleController(QObject):
