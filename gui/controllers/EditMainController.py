@@ -81,4 +81,5 @@ class EditMainController(QObject):
         self._line_edit_controller.setVisible(state)
 
     def on_line_edit_executed(self, text):
-        pass
+        print(text)
+        self._line_edit_controller.clearText()

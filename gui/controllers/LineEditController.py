@@ -21,3 +21,6 @@ class LineEditController(QObject):
 
     def setVisible(self, state):
         self._view.setVisible(state)
+
+    def clearText(self):
+        self._view.clearText()
