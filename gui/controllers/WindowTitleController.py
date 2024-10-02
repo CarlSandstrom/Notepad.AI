@@ -3,9 +3,9 @@ from gui.models.TextModel import *
 
 
 class WindowTitleController(QObject):
-    def __init__(self, view, file_name_model, text_model):
+    def __init__(self, main_window, file_name_model, text_model):
         super().__init__()
-        self._view = view
+        self._main_window = main_window
         self._file_name_model = file_name_model
         self._text_model = text_model
 
@@ -19,7 +19,7 @@ class WindowTitleController(QObject):
         file_name = self._file_name
         is_modified = self._is_modified
         title = f"{file_name}{' - *' if is_modified else ''}"
-        self._view.setWindowTitle(title)
+        self._main_window.setWindowTitle(title)
 
     def set_file_name(self, file_name):
         self._file_name = file_name
