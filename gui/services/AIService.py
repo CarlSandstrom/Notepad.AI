@@ -9,7 +9,7 @@ class AIService(QObject):
         self._command_decoder = CommandDecoder()
 
     def process_text(self, text):
-        slot_contents, predicted_intent = self._command_decoder.decode_text(text)
+        predicted_intent, slot_contents = self._command_decoder.decode_text(text)
 
         print(f"Predicted Intent: {predicted_intent}")
         print("Slot Contents:")

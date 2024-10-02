@@ -68,14 +68,14 @@ class CommandDecoder:
         predicted_intent_id = torch.argmax(intent_logits, dim=1).item()
         predicted_intent = labels_mapping[predicted_intent_id]
 
-        return slot_contents, predicted_intent
+        return labels_mapping_inv[predicted_intent], slot_contents
 
 
 if __name__ == "__main__":
     decoder = CommandDecoder()
 
     input_text = 'Please replace "old puggle knoff" with "new shmuck schmakk dinke plojj 999. XYZ"'  # 'Save this document as "notes_21.csv"'
-    slot_contents, predicted_intent = decoder.decode_text(input_text)
+    predicted_intent, slot_contents = decoder.decode_text(input_text)
     print(f"Predicted Intent: {predicted_intent}")
     print("Slot Contents:")
     for slot, content in slot_contents.items():

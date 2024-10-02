@@ -22,7 +22,7 @@ class FileController(QObject):
         file_dialog = QFileDialog(self._view)
         file_dialog.setAcceptMode(QFileDialog.AcceptOpen)
         file_dialog.setFileMode(QFileDialog.ExistingFile)
-        file_dialog.setNameFilter("Text files (*.txt)")
+        file_dialog.setNameFilter("Text files (*.txt);; All files (*.*)")
         if file_dialog.exec_():
             file_path = file_dialog.selectedFiles()[0]
             with open(file_path, "r") as f:
@@ -38,11 +38,14 @@ class FileController(QObject):
         else:
             self._save_current_file()
 
-    def save_file_as(self):
+    def save_file_as(self, filename=None):
         file_dialog = QFileDialog(self._view)
         file_dialog.setAcceptMode(QFileDialog.AcceptSave)
         # Show text files or all files
         file_dialog.setNameFilter("Text files (*.txt);;All files (*.*)")
+        if filename is not None:
+            file_dialog.selectFile(filename)
+
         if file_dialog.exec_():
             file_path = file_dialog.selectedFiles()[0]
             self._file_name_model.set_file_name(file_path)

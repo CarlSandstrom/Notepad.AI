@@ -9,6 +9,7 @@ from gui.controllers.MenuController import *
 from gui.controllers.FileController import *
 from gui.controllers.WindowTitleController import *
 from gui.controllers.LineEditController import *
+from ai.common.Constants import *
 
 
 class MainController(QObject):
@@ -105,4 +106,6 @@ class MainController(QObject):
         print(text)
 
         predicted_intent, slot_contents = self._ai_service.process_text(text)
-        pass
+        if predicted_intent == SAVE_FILE:
+            filename = slot_contents["FILENAME"]
+            self._file_controller.save_file_as(filename)

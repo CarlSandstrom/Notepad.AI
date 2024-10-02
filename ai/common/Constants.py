@@ -16,6 +16,8 @@ labels_mapping = {
     REPLACE: "REPLACE",
 }
 
+labels_mapping_inv = {v: k for k, v in labels_mapping.items()}
+
 # Slots
 O = 0
 B_FILENAME = 1
