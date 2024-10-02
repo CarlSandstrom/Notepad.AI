@@ -1,4 +1,5 @@
 from typing import Any
+from gui.services.AIService import AIService
 from gui.views.EditView import *
 from gui.views.MainWindow import *
 from gui.models.FileNameModel import *
@@ -17,6 +18,7 @@ class MainController(QObject):
         self._init_models()
         self._init_views()
         self._init_controllers()
+        self._init_services()
 
         self._connect_signals()
         self._initialize_state()
@@ -43,6 +45,9 @@ class MainController(QObject):
         self._file_controller = FileController(self._main_window, self._file_name_model, self._text_model)
         self._line_edit_controller = LineEditController(self._main_window, self._line_edit_view)
 
+    def _init_services(self):
+        self._ai_service = AIService()
+
     def run(self):
         self._main_window.show()
 
@@ -68,9 +73,9 @@ class MainController(QObject):
         self._file_controller.file_saved.connect(self.on_file_saved)
         self._file_controller.file_opened.connect(self.on_file_opened)
         self._recent_files_model.recent_files_changed.connect(self._menu_controller.update_recent_files)
+        self._menu_controller.exit_requested.connect(self.on_exit)
 
         self._menu_controller.open_recent_file_requested.connect(self.on_recent_file_opened)
-
         self._menu_controller.toggle_copilot_field_requested.connect(self.on_toggle_copilot_field)
 
         self._line_edit_controller.text_executed.connect(self.on_line_edit_executed)
@@ -91,6 +96,13 @@ class MainController(QObject):
     def on_toggle_copilot_field(self, state):
         self._line_edit_controller.setVisible(state)
 
+    def on_exit(self):
+        self._main_window.close()
+
     def on_line_edit_executed(self, text):
-        print(text)
         self._line_edit_controller.clearText()
+
+        print(text)
+
+        predicted_intent, slot_contents = self._ai_service.process_text(text)
+        pass

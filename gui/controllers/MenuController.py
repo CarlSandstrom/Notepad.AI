@@ -31,6 +31,8 @@ class MenuController(QObject):
         self._edit_view.has_text_selection_changed.connect(self.on_has_text_selection_changed)
         self._recent_files_model.recent_files_changed.connect(self.update_recent_files)
 
+        self._connect_actions()
+
     def _connect_actions(self):
 
         self._main_window.newAction.triggered.connect(self.new_file_requested.emit)  # type: ignore

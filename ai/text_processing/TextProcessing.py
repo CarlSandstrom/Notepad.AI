@@ -8,7 +8,7 @@ from ai.common.JointBertModel import JointBertModel
 from transformers import AutoTokenizer
 
 
-class CommandDecoding:
+class CommandDecoder:
     def __init__(self):
         num_intents = len(labels_mapping)
         num_slots = len(slotId_to_str_mapping)
@@ -21,7 +21,7 @@ class CommandDecoding:
 
         self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
 
-    def get_slot_contents(self, input_text):
+    def decode_text(self, input_text):
         # Tokenize the input
         encoded = self.tokenizer.encode_plus(
             input_text, return_offsets_mapping=True, add_special_tokens=True, return_tensors="pt"
@@ -72,10 +72,10 @@ class CommandDecoding:
 
 
 if __name__ == "__main__":
-    decoder = CommandDecoding()
+    decoder = CommandDecoder()
 
     input_text = 'Please replace "old puggle knoff" with "new shmuck schmakk dinke plojj 999. XYZ"'  # 'Save this document as "notes_21.csv"'
-    slot_contents, predicted_intent = decoder.get_slot_contents(input_text)
+    slot_contents, predicted_intent = decoder.decode_text(input_text)
     print(f"Predicted Intent: {predicted_intent}")
     print("Slot Contents:")
     for slot, content in slot_contents.items():

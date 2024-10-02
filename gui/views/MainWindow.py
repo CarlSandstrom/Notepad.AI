@@ -1,15 +1,9 @@
 from PyQt5.QtCore import QObject, Qt, pyqtSignal
 from PyQt5.QtWidgets import (
     QApplication,
-    QFileDialog,
-    QLabel,
-    QLineEdit,
     QMainWindow,
-    QPlainTextEdit,
-    QPushButton,
     QVBoxLayout,
     QWidget,
-    QMessageBox,
 )
 
 from gui.views.LineEditView import LineEditView
@@ -75,3 +69,8 @@ class MainWindow(QMainWindow):
         self.showCopilotAction.setCheckable(True)  # type: ignore
         self.showCopilotAction.setChecked(True)  # type: ignore
         self.viewMenu.addAction(self.showCopilotAction)  # type: ignore
+
+    def close(self):
+        super().close()
+        if QApplication.instance().quitOnLastWindowClosed():
+            QApplication.instance().quit()
