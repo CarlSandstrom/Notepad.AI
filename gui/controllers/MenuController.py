@@ -15,6 +15,8 @@ class MenuController(QObject):
     copy_requested = pyqtSignal()
     cut_requested = pyqtSignal()
     paste_requested = pyqtSignal()
+    find_requested = pyqtSignal()
+    replace_requested = pyqtSignal()
 
     toggle_copilot_field_requested = pyqtSignal(bool)
 
@@ -43,6 +45,8 @@ class MenuController(QObject):
         self._main_window.copyAction.triggered.connect(self.copy_requested.emit)  # type: ignore
         self._main_window.cutAction.triggered.connect(self.cut_requested.emit)  # type: ignore
         self._main_window.pasteAction.triggered.connect(self.paste_requested.emit)  # type: ignore
+        self._main_window.findAction.triggered.connect(self.find_requested.emit)  # type: ignore
+        self._main_window.replaceAction.triggered.connect(self.replace_requested.emit)  # type: ignore
         self._main_window.showCopilotAction.toggled.connect(self.on_toggle_copilot_field_requested)  # type: ignore
 
     def on_modified_data_changed(self, is_modified):

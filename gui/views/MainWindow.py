@@ -63,6 +63,16 @@ class MainWindow(QMainWindow):
         self.pasteAction.setShortcut("Ctrl+V")  # type: ignore
         self.editMenu.addAction(self.pasteAction)  # type: ignore
 
+        self.editMenu.addSeparator()  # type: ignore
+
+        self.findAction = self.editMenu.addAction("&Find...")  # type: ignore
+        self.findAction.setShortcut("Ctrl+F")  # type: ignore
+        self.editMenu.addAction(self.findAction)  # type: ignore
+
+        self.replaceAction = self.editMenu.addAction("&Replace...")  # type: ignore
+        self.replaceAction.setShortcut("Ctrl+H")  # type: ignore
+        self.editMenu.addAction(self.replaceAction)  # type: ignore
+
         self.viewMenu = self.menuBar().addMenu("&View")  # type: ignore
 
         self.showCopilotAction = self.viewMenu.addAction("&Show Copilot field")  # type: ignore

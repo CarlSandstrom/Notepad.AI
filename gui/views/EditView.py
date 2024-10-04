@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import (
     QWidget,
     QMessageBox,
 )
+from PyQt5.QtGui import QTextCursor
 
 from gui.views.LineEditView import LineEditView
 
@@ -43,3 +44,10 @@ class EditView(QWidget):
 
     def on_text_selection_changed(self):
         self.has_text_selection_changed.emit(self.plainTextEdit.textCursor().hasSelection())
+
+    def set_selection(self, start, end):
+        cursor = self.plainTextEdit.textCursor()
+        cursor.setPosition(start)
+        cursor.setPosition(end, QTextCursor.KeepAnchor)
+        self.plainTextEdit.setTextCursor(cursor)
+        self.plainTextEdit.ensureCursorVisible()

@@ -9,6 +9,7 @@ from gui.controllers.MenuController import *
 from gui.controllers.FileController import *
 from gui.controllers.WindowTitleController import *
 from gui.controllers.LineEditController import *
+from gui.controllers.FindController import *
 from ai.common.Constants import *
 
 
@@ -46,6 +47,8 @@ class MainController(QObject):
         self._file_controller = FileController(self._main_window, self._file_name_model, self._text_model)
         self._line_edit_controller = LineEditController(self._main_window, self._line_edit_view)
 
+        self._find_replace_controller = FindController(self._menu_controller, self._text_model, self._edit_view)
+
     def _init_services(self):
         self._ai_service = AIService()
 
@@ -71,11 +74,13 @@ class MainController(QObject):
         self._edit_view.text_edited.connect(self._text_model.set_data)
 
         self._text_model.data_changed.connect(self._edit_view.update_data)
+
         self._file_controller.file_saved.connect(self.on_file_saved)
         self._file_controller.file_opened.connect(self.on_file_opened)
-        self._recent_files_model.recent_files_changed.connect(self._menu_controller.update_recent_files)
-        self._menu_controller.exit_requested.connect(self.on_exit)
 
+        self._recent_files_model.recent_files_changed.connect(self._menu_controller.update_recent_files)
+
+        self._menu_controller.exit_requested.connect(self.on_exit)
         self._menu_controller.open_recent_file_requested.connect(self.on_recent_file_opened)
         self._menu_controller.toggle_copilot_field_requested.connect(self.on_toggle_copilot_field)
 
@@ -99,6 +104,12 @@ class MainController(QObject):
 
     def on_exit(self):
         self._main_window.close()
+
+    def on_find(self):
+        pass
+
+    def on_replace(self):
+        pass
 
     def on_line_edit_executed(self, text):
         self._line_edit_controller.clearText()
